@@ -50,11 +50,13 @@ pub trait SubscriptionBase {
     fn take(&self, message: &mut rclrs_common::traits::Message) -> RclResult<bool> {
         let handle = &*self.handle().get();
         let message_handle = message.get_native_message();
+        let mut msg_info = rmw_message_info_t { publisher_gid: rmw_gid_t { implementation_identifier : std::ptr::null(), data: [0; 24] }, from_intra_process: false };
 
         let result = unsafe {
             rcl_take(
                 handle as *const _,
                 message_handle as *mut _,
+                &mut msg_info,
                 std::ptr::null_mut(),
             )
         };
@@ -124,10 +126,12 @@ where
     pub fn take(&self, message: &mut T) -> RclResult {
         let handle = &*self.handle.get();
         let message_handle = message.get_native_message();
+        let mut msg_info = rmw_message_info_t { publisher_gid: rmw_gid_t { implementation_identifier : std::ptr::null(), data: [0; 24] }, from_intra_process: false };
         let ret = unsafe {
             rcl_take(
                 handle as *const _,
                 message_handle as *mut _,
+                &mut msg_info,
                 std::ptr::null_mut(),
             )
         };
@@ -141,6 +145,8 @@ where
         (self.callback)(msg);
     }
 }
+
+
 
 impl<T> SubscriptionBase for Subscription<T>
 where

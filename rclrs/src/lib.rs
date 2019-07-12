@@ -54,7 +54,7 @@ pub fn spin_once(node: &Node, timeout: i64) -> RclResult {
             number_of_clients,
             number_of_services,
             number_of_events,
-            context,  // TODO: fixme
+            &mut *node.context.get_mut(),
             rcutils_get_default_allocator(),
         )
         .ok()?;
