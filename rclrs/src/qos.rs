@@ -18,6 +18,18 @@ pub enum QoSDurabilityPolicy {
     Volatile = 2,
 }
 
+const QoSDeadlineDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+const QoSLifespanDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+const QoSLivelinessLeaseDurationDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+
+pub enum QoSLivelinessPolicy {
+    SystemDefault = 0,
+    Automatic = 1,
+    ManualByNode = 2,
+    ManualByTopic = 3,
+    Unknown = 4
+}
+
 pub struct QoSProfile {
     pub history: QoSHistoryPolicy,
     pub depth: isize,
@@ -84,6 +96,10 @@ impl From<QoSProfile> for rmw_qos_profile_t {
             reliability: qos.reliability.into(),
             durability: qos.durability.into(),
             avoid_ros_namespace_conventions: qos.avoid_ros_namespace_conventions,
+            deadline: QoSDeadlineDefault,
+            lifespan: QoSLifespanDefault,
+            liveliness: QoSLivelinessPolicy::SystemDefault.into(),
+            liveliness_lease_duration: QoSLivelinessLeaseDurationDefault
         }
     }
 }
@@ -129,6 +145,32 @@ impl From<QoSDurabilityPolicy> for rmw_qos_durability_policy_t {
             }
             QoSDurabilityPolicy::Volatile => {
                 rmw_qos_durability_policy_t::RMW_QOS_POLICY_DURABILITY_VOLATILE
+            }
+        }
+    }
+}
+
+impl From<QoSLivelinessPolicy> for rmw_qos_liveliness_policy_t {
+    fn from(policy: QoSLivelinessPolicy) -> Self {
+        match policy {
+            QoSLivelinessPolicy::SystemDefault => {
+                rmw_qos_liveliness_policy_t::RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT
+            }
+
+            QoSLivelinessPolicy::Automatic => {
+                rmw_qos_liveliness_policy_t::RMW_QOS_POLICY_LIVELINESS_AUTOMATIC
+            }
+
+            QoSLivelinessPolicy::ManualByNode => {
+                rmw_qos_liveliness_policy_t::RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE
+            }
+
+            QoSLivelinessPolicy::ManualByTopic => {
+                rmw_qos_liveliness_policy_t::RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC
+            }
+
+            QoSLivelinessPolicy::Unknown => {
+                rmw_qos_liveliness_policy_t::RMW_QOS_POLICY_LIVELINESS_UNKNOWN
             }
         }
     }

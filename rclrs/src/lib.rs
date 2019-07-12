@@ -43,6 +43,7 @@ pub fn spin_once(node: &Node, timeout: i64) -> RclResult {
     let number_of_timers = 0;
     let number_of_clients = 0;
     let number_of_services = 0;
+    let number_of_events = 0;
 
     unsafe {
         rcl_wait_set_init(
@@ -52,6 +53,8 @@ pub fn spin_once(node: &Node, timeout: i64) -> RclResult {
             number_of_timers,
             number_of_clients,
             number_of_services,
+            number_of_events,
+            context,  // TODO: fixme
             rcutils_get_default_allocator(),
         )
         .ok()?;
