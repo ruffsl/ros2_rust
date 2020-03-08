@@ -5,6 +5,7 @@ mod rcl_bindings {
     #![allow(non_camel_case_types)]
     #![allow(non_snake_case)]
     #![allow(clippy::all)]
+    #![allow(improper_ctypes)]
 
     include!(concat!(env!("OUT_DIR"), "/rcl_bindings.rs"));
 }
