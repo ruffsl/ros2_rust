@@ -18,9 +18,9 @@ pub enum QoSDurabilityPolicy {
     Volatile = 2,
 }
 
-const QoSDeadlineDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
-const QoSLifespanDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
-const QoSLivelinessLeaseDurationDefault: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+const QO_SDEADLINE_DEFAULT: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+const QO_SLIFESPAN_DEFAULT: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
+const QO_SLIVELINESS_LEASE_DURATION_DEFAULT: rmw_time_t = rmw_time_t { sec: 0, nsec: 0 };
 
 pub enum QoSLivelinessPolicy {
     SystemDefault = 0,
@@ -96,10 +96,10 @@ impl From<QoSProfile> for rmw_qos_profile_t {
             reliability: qos.reliability.into(),
             durability: qos.durability.into(),
             avoid_ros_namespace_conventions: qos.avoid_ros_namespace_conventions,
-            deadline: QoSDeadlineDefault,
-            lifespan: QoSLifespanDefault,
+            deadline: QO_SDEADLINE_DEFAULT,
+            lifespan: QO_SLIFESPAN_DEFAULT,
             liveliness: QoSLivelinessPolicy::SystemDefault.into(),
-            liveliness_lease_duration: QoSLivelinessLeaseDurationDefault
+            liveliness_lease_duration: QO_SLIVELINESS_LEASE_DURATION_DEFAULT
         }
     }
 }
