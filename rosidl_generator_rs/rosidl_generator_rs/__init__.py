@@ -74,7 +74,7 @@ def generate_rs(generator_arguments_file, typesupport_impls):
     latest_target_timestamp = get_newest_modification_time(
         args['target_dependencies'])
 
-    for ros_interface_file in args['ros_interface_files']:
+    for ros_interface_file in args['idl_tuples']:
         extension = os.path.splitext(ros_interface_file)[1]
         subfolder = os.path.basename(os.path.dirname(ros_interface_file))
         if extension == '.msg':
